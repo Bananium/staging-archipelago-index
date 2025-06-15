@@ -1,22 +1,25 @@
 loader: taskgraph.loader.transform:loader
 
 transforms:
-    - src.transforms.create_comment
+    - src.transforms.create_diff
     - taskgraph.transforms.task
+
 
 kind-dependencies:
   - diff
 
 tasks:
-  # TODO: This requires rewriting
-  apdiff:
-    description: Create a comment on the PR with the diff link
-    worker-type: githubscript
+  apworld:
+    label: diff-apworld
+    worker-type: apdiffscript
     run-on-tasks-for: ["github-pull-request", "github-pull-request-untrusted"]
+    optimization:
+      skip-unless-changed: ["index.toml", "index/**"]
+    description: Diff the apworlds and push to review repo
     dependencies:
       diff-index: diff-index
     if-dependencies:
       - diff-index
     worker:
-      implementation: githubscript-apdiff
+      implementation: apdiffscript-diff
       diff-task: {task-reference: <diff-index>}
