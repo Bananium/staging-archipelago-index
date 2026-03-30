@@ -24,11 +24,9 @@ tasks:
       diff: diff-index
     fetches:
       diff:
-        - artifact: output/changes.json
+        - artifact: changes.json
           extract: false
-          dest: /builds/worker
-    attributes:
-      artifact_prefix: public/output
+          dest: /builds/worker/fetches
     run:
       using: run-task
       command: >-
